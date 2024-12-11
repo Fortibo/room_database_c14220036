@@ -97,6 +97,20 @@ class MainActivity : AppCompatActivity() {
 
             }
         )
+        adapterHistory.setOnItemClickCallback(
+            object :adapterHistory.OnItemClickCallback{
+                override fun delData(dtHistory: historyBarang) {
+                    CoroutineScope(Dispatchers.IO).async{
+                        DBH.funhistoryBelanjaDAO().delete(dtHistory)
+                        val history = DBH.funhistoryBelanjaDAO().selectAll()
+                        withContext(Dispatchers.Main){
+                            adapterHistory.isiData(history)
+                        }
+                    }
+                }
+
+            }
+        )
 
 
     }
