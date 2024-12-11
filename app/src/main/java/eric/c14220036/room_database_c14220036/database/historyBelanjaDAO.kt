@@ -10,13 +10,13 @@ import androidx.room.Query
 @Dao
 interface historyBelanjaDAO {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun insert(daftar : historyBarang)
+    fun insert(history : historyBarang)
 
     @Query("UPDATE historyBarang SET tanggal=:isi_tanggal, item=:isi_item, status=:isi_status, jumlah=:isi_jumlah WHERE id=:pilih_id")
     fun update(isi_tanggal: String, isi_item: String, isi_jumlah: String, isi_status: Int, pilih_id: Int)
 
     @Delete
-    fun delete(daftar: historyBarang)
+    fun delete(history: historyBarang)
 
     @Query("SELECT * FROM historyBarang ORDER BY id asc")
     fun selectAll() : MutableList<historyBarang>

@@ -1,6 +1,7 @@
 package eric.c14220036.room_database_c14220036
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
@@ -56,6 +57,7 @@ class TambahDaftar : AppCompatActivity() {
             }
         }
         _btnTambh.setOnClickListener {
+
             CoroutineScope(Dispatchers.IO).async {
                 DB.fundaftarBelanjaDAO().insert(
                     daftarBelanja(
@@ -65,6 +67,8 @@ class TambahDaftar : AppCompatActivity() {
                     )
                 )
             }
+            Log.d("db_daftar", "item : " + _etItem.text.toString())
+
             finish()
         }
         _btnEdit.setOnClickListener {

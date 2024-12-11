@@ -56,16 +56,15 @@ class adapterDaftar (private val daftarBelanja: MutableList<daftarBelanja>) : Re
             intent.putExtra("id",daftar.id)
             intent.putExtra("addEdit",1)
             it.context.startActivity(intent)
+            notifyDataSetChanged()
         }
         holder._btDelete.setOnClickListener {
             onItemClickCallback.delData(daftar)
         }
         holder._btnSelesai.setOnClickListener {
-            onItemClickCallback.delData(daftar)
-        }
-        holder._btnSelesai.setOnClickListener {
             onItemClickCallback.selesai(daftar)
         }
+
     }
     fun isiData (daftar: List<daftarBelanja>){
         daftarBelanja.clear()

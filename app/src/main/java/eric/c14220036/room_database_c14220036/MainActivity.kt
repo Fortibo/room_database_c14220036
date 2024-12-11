@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import eric.c14220036.room_database_c14220036.database.daftarBelanja
 import eric.c14220036.room_database_c14220036.database.daftarBelanjaDB
+import eric.c14220036.room_database_c14220036.database.historyBarang
 import eric.c14220036.room_database_c14220036.database.historyBarangDB
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -21,10 +22,13 @@ import kotlinx.coroutines.withContext
 class MainActivity : AppCompatActivity() {
     private lateinit var DB :daftarBelanjaDB
     private lateinit var DBH :historyBarangDB
+
     private lateinit var adapterDaftar : adapterDaftar
-    private lateinit var adapterHistory : adapterDaftar
+    private lateinit var adapterHistory : adapterHistory
+
     private var arDaftar : MutableList<daftarBelanja> = mutableListOf()
-    private var arHistory : MutableList<daftarBelanja> = mutableListOf()
+    private var arHistory : MutableList<historyBarang> = mutableListOf()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -35,7 +39,7 @@ class MainActivity : AppCompatActivity() {
             insets
         }
         adapterDaftar = adapterDaftar(arDaftar)
-        adapterHistory = adapterDaftar(arHistory)
+        adapterHistory = adapterHistory(arHistory)
 
         val _rvDaftar  = findViewById<RecyclerView>(R.id.rvDaftar)
         val _rvHistory = findViewById<RecyclerView>(R.id.rvHistory)
@@ -67,16 +71,28 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 override fun selesai(dtBelanja: daftarBelanja) {
+
                     CoroutineScope(Dispatchers.IO).async{
+                        val historyData = historyBarang(
+                        tanggal = dtBelanja.tanggal.toString(),
+                        item = dtBelanja.item.toString(),
+                        jumlah = dtBelanja.jumlah,
+                        status = 1
+                    )
+                        Log.d("DEBUG", "Inserting data to historyBarang: $historyData")
                         DB.fundaftarBelanjaDAO().delete(dtBelanja)
-                        DBH.funhistoryBelanjaDAO().insert(dtBelanja)
+
+                        DBH.funhistoryBelanjaDAO().insert(historyData)
+
                         val daftar = DB.fundaftarBelanjaDAO().selectAll()
                         val history = DBH.funhistoryBelanjaDAO().selectAll()
+                        Log.d("DEBUG", "History after insert: $history")
                         withContext(Dispatchers.Main){
                             adapterDaftar.isiData(daftar)
                             adapterHistory.isiData(history)
                         }
                     }
+
                 }
 
             }
