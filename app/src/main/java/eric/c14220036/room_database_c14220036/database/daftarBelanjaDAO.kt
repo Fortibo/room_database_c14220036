@@ -22,4 +22,6 @@ interface daftarBelanjaDAO {
 
     @Query ("SELECT * FROM daftarBelanja WHERE id=:isi_id")
     suspend fun getItem(isi_id: Int) : daftarBelanja
+
+
 }

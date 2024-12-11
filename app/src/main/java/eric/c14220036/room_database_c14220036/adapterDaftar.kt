@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView.OnItemClickListener
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.view.menu.MenuView.ItemView
@@ -16,6 +17,7 @@ class adapterDaftar (private val daftarBelanja: MutableList<daftarBelanja>) : Re
 
     interface OnItemClickCallback{
         fun delData (dtBelanja: daftarBelanja)
+        fun selesai(dtBelanja: daftarBelanja)
     }
     fun setOnItemClickCallback(onItemClickCallback: OnItemClickCallback){
         this.onItemClickCallback= onItemClickCallback
@@ -28,6 +30,7 @@ class adapterDaftar (private val daftarBelanja: MutableList<daftarBelanja>) : Re
 
         var _btEdit = itemView.findViewById<ImageView>(R.id.btnEdit)
         var _btDelete = itemView.findViewById<ImageView>(R.id.btnDelete)
+        var _btnSelesai = itemView.findViewById<Button>(R.id.btnSelesai)
     }
 
 
@@ -56,6 +59,12 @@ class adapterDaftar (private val daftarBelanja: MutableList<daftarBelanja>) : Re
         }
         holder._btDelete.setOnClickListener {
             onItemClickCallback.delData(daftar)
+        }
+        holder._btnSelesai.setOnClickListener {
+            onItemClickCallback.delData(daftar)
+        }
+        holder._btnSelesai.setOnClickListener {
+            onItemClickCallback.selesai(daftar)
         }
     }
     fun isiData (daftar: List<daftarBelanja>){
